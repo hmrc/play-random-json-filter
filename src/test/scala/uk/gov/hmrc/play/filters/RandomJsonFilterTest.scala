@@ -88,6 +88,18 @@ class RandomJsonFilterTest extends FunSuite with MockitoSugar {
     }
   }
 
+  test("do nothing when original result is empty body") {
+    new context {
+      when(body.consumeData(any())) thenReturn Future.successful(ByteString(""))
+      when(r.header) thenReturn new ResponseHeader(200, Map.empty)
+      private val fresult = new TestRandomJsonFilter(Some(configuration)).apply(f _)(rh)
+      private val result = await(fresult)
+      assert(resultBody(result.body) === "")
+      verify(configuration).getBoolean("enabled")
+      verify(body, times(2)).consumeData(any())
+    }
+  }
+
   test("return an empty array when original return is empty array") {
     new context {
       when(body.consumeData(any())) thenReturn Future.successful(ByteString("[]"))

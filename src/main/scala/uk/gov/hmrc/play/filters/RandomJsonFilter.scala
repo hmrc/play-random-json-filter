@@ -51,9 +51,14 @@ abstract class RandomJsonFilter(config: Option[Configuration])(implicit ec: Exec
   private def newResponse(result: Result): Future[Result] = {
     result.body.consumeData(mat) map {
       body =>
-        val jsonValue = Json.parse(body.decodeString("UTF-8"))
-        val newJsonValue = process(jsonValue)
-        Strict(ByteString(Json.stringify(newJsonValue)), Some(MimeTypes.JSON))
+        val bodyStr = body.decodeString("UTF-8")
+        if(bodyStr.isEmpty) {
+          result.body
+        } else {
+          val jsonValue = Json.parse(bodyStr)
+          val newJsonValue = process(jsonValue)
+          Strict(ByteString(Json.stringify(newJsonValue)), Some(MimeTypes.JSON))
+        }
     } map {
       body =>
         Result(result.header, body)
