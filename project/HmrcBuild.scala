@@ -16,7 +16,11 @@
 
 import sbt.Keys._
 import sbt._
+
+import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
+import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning
+import uk.gov.hmrc.SbtArtifactory
 
 object HmrcBuild extends Build {
 
@@ -25,15 +29,13 @@ object HmrcBuild extends Build {
   val appName = "play-random-json-filter"
 
   lazy val library: Project = Project(appName, file("."))
-    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
+    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
     .settings(
+      majorVersion := 0,
       scalaVersion := "2.11.11",
       libraryDependencies ++= AppDependencies(),
       crossScalaVersions := Seq("2.11.8"),
-      parallelExecution in Test := false,
-      resolvers := Seq(
-        Resolver.bintrayRepo("hmrc", "releases"), "typesafe-releases" at "http://repo.typesafe.com/typesafe/releases/")
-    )
+      parallelExecution in Test := false)
 }
 
 private object AppDependencies {
