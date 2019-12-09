@@ -1,3 +1,5 @@
+# INACTIVE - this library is no longer used. The single class provided by this library has been moved into bank-account-reputation, the only project that used this library.
+
 # play-random-json-filter
 
 [![Build Status](https://travis-ci.org/hmrc/play-random-json-filter.svg?branch=master)](https://travis-ci.org/hmrc/play-random-json-filter) [ ![Download](https://api.bintray.com/packages/hmrc/releases/play-random-json-filter/images/download.svg) ](https://bintray.com/hmrc/releases/play-random-json-filter/_latestVersion)
